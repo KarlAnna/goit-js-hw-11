@@ -15,7 +15,7 @@ export default class PixabayApiService {
         return fetch(url).then(response => response.json())
             .then(data => {
                 this.increasePage()
-                if (data.hits.length === 0) {
+                if (data.totalHits == 0) {
                     return Notify.failure('Sorry, there are no images matching your search query. Please try again.')
                 }
                     this.appendedHits += data.hits.length

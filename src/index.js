@@ -6,7 +6,6 @@ const searchForm = document.querySelector('#search-form')
 const qalleryContainer = document.querySelector('.gallery')
 const btn = document.querySelector('button[type=button]')
 
-
 const pixabayApiService = new PixabayApiService()
 searchForm.addEventListener('submit', onSearchFormSubmit)
 btn.addEventListener('click', onLoadMore)
@@ -20,18 +19,22 @@ function onSearchFormSubmit(e) {
             pixabayApiService.fetchArticles().then(hits => {
             clearContainer()
             appendMarkup(hits)
-            loadMoreBtnVisible()
+            if (pixabayApiService.appendedHits > 0) {
+                loadMoreBtnVisible()
+            }
             return
         })} else { Notify.failure('Please enter something') }
     
 }
 
 function onLoadMore() {
-    if (pixabayApiService.totalHits == pixabayApiService.appendedHits) {
+    console.log(pixabayApiService.totalHits);
+    
+    if (pixabayApiService.totalHits === qalleryContainer.children.length) {
         Notify.failure("We're sorry, but you've reached the end of search results.")
         return
-    }
-    pixabayApiService.fetchArticles().then(appendMarkup)
+    } else {pixabayApiService.fetchArticles().then(appendMarkup)}
+    
 }
 
 function loadMoreBtnVisible() {
