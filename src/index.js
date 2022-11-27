@@ -1,3 +1,5 @@
+import './sass/index.css'
+
 import { Notify } from 'notiflix/build/notiflix-notify-aio';
 import PixabayApiService from "./pixabay-service"
 
