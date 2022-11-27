@@ -1,4 +1,5 @@
 import { Notify } from 'notiflix/build/notiflix-notify-aio';
+import axios from 'axios';
 
 export default class PixabayApiService {
     constructor() {
@@ -12,16 +13,17 @@ export default class PixabayApiService {
     fetchArticles() {
         const url = `https://pixabay.com/api/?key=${this.key}&q=${this.searchQuery}&image_type=photo&orientation=horizontal&safesearch=true&page=${this.page}&per_page=50`
 
-        return fetch(url).then(response => response.json())
-            .then(data => {
+        return axios.get(url)
+            .then(res => {
                 this.increasePage()
-                if (data.totalHits == 0) {
+                if (res.data.totalHits == 0) {
                     return Notify.failure('Sorry, there are no images matching your search query. Please try again.')
                 }
-                    this.appendedHits += data.hits.length
-                    this.totalHits = data.totalHits
-                    return data.hits
-            }).catch(error => {
+                    this.appendedHits += res.data.hits.length
+                    this.totalHits = res.data.totalHits
+                    return res.data.hits
+            })
+            .catch(error => {
                 console.log(error);
             })
     }
